@@ -2,7 +2,7 @@ import sys
 from initData import *
 
 pygame.init()
-# 设置窗口标题和图标
+
 pygame.display.set_caption('线条小狗冲冲冲')
 iconImg = pygame.image.load('images/logo.png')
 pygame.display.set_icon(iconImg)
@@ -11,32 +11,26 @@ screen = pygame.display.set_mode((750, 500))
 
 clock = pygame.time.Clock()
 
-#游戏状态
 gameState = 'GAMEREADY'
-#分数值
+
 score = 0
 
-#图片位置参数
 readyImgRect = None
 gameoverImgRect = None
 
-# 添加障碍物常量
 ADDBARRIER = 101
-# 添加角色动画控制常量
+
 ANIMATION = 102
-# 角色跳跃控制常量
+
 JUMP = 103
 
-#音效
 click_sound = pygame.mixer.Sound('click.wav')
 pick_up_sound = pygame.mixer.Sound('bark.wav')
 fail_sound = pygame.mixer.Sound('fail.wav')
 
-# 背景音乐
 pygame.mixer.music.load("bgm.wav")
 pygame.mixer.music.play(-1, 0.0)
 
-#随机一个金币位置
 setRandXY_bone1()
 setRandXY_bone2()
 
@@ -61,7 +55,7 @@ def draw():
         gameoverImgRect = gameoverImg.get_rect()
         gameoverImgRect.center = screen.get_rect().center
         screen.blit(gameoverImg, (gameoverImgRect.x, gameoverImgRect.y))
-        #分数展示
+        
         font = pygame.font.SysFont('Arial', 30)
         text = font.render(str(score), True, (20,23,34))
         textRect = text.get_rect()
@@ -99,12 +93,11 @@ def jumpY():
     if player['y'] <= player['jumpMax']:
         player['stepy'] = -3
     if player['y'] >= player['jumpBegin']:
-        # 让定时器停止
+        
         pygame.time.set_timer(JUMP, 0)
         player['y'] = player['jumpBegin']
         player['state'] = 'running'
 
-#物体碰撞检测
 def checkHit(p, b):
     top = b['y'] - p['height']
     bottom = b['y'] + b['height']
@@ -114,7 +107,6 @@ def checkHit(p, b):
         if p['y'] >= top and p['y'] <= bottom:
             return True
 
-
 def check():
     global score
     global gameState
@@ -122,7 +114,7 @@ def check():
         if checkHit(player, barrier):
             gameState = 'GAMEOVER'
             fail_sound.play()
-            player['img'] = failImg  # 修改图片
+            player['img'] = failImg  
             break
         else:
             if player['x'] > barrier['x'] + barrier['width']:
@@ -137,7 +129,7 @@ def check():
         score += 200
         pick_up_sound.play()
         setRandXY_bone2()
-#鼠标点击判断
+
 def checkPoint(objRect, pos):
     top = objRect.y
     bottom = objRect.y + objRect.height
@@ -179,12 +171,11 @@ def eventListen():
                 pos = pygame.mouse.get_pos()
                 if checkPoint(gameoverImgRect, pos):
                     gameState = 'RUNNING'
-                    # 启动定时器
+                   
                     pygame.time.set_timer(ADDBARRIER, 1500)
                     pygame.time.set_timer(ANIMATION, 30)
                     resetData()
 
-#重置数据
 def resetData():
     global barrierList, score
     bg['x'] = 0
@@ -222,9 +213,3 @@ while True:
         stopTimer()
     pygame.display.update()
 
-
-# i = 0
-# #生成障碍物频率控制
-# i += 1
-# if i%120 == 0:
-#     barrierList.append(getBarrier())
