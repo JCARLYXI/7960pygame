@@ -31,7 +31,6 @@ player = {
         'state': 'running'
 }
 
-# 初始化骨头数据
 gRect_1 = bone1.get_rect()
 gRect_2 = bone2.get_rect()
 bone1 = {'img': bone1,
@@ -51,7 +50,6 @@ bone2 = {'img': bone2,
 
 
 def getBarrier():
-    # 随机障碍物
     barrierImg = random.choice(barrierImgList)
     barrierRect = barrierImg.get_rect()
     barrier = {
